@@ -6,7 +6,7 @@ return {
             extensions = {
                 file_browser = {
                     theme = "ivy",
-                    hijack_netrw = true
+                    hijack_netrw = true,
                 },
                 projects = {},
             },

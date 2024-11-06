@@ -3,13 +3,28 @@ return {
     dependencies = {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-cmdline",
+        "hrsh7th/nvim-cmp",
+        "j-hui/fidget.nvim",
     },
 
     config = function()
-        require("mason").setup({})
+        local cmp = require('cmp')
+        local cmp_lsp = require('cmp_nvim_lsp')
+        local capabilities = vim.tbl_deep_extend(
+            "force",
+            {},
+            vim.lsp.protocol.make_client_capabilities(),
+            cmp_lsp.default_capabilities())
+
+        require("fidget").setup({})
+        require("mason").setup()
         require("mason-lspconfig").setup({
             ensure_installed = {
-
+                "lua_ls", "omnisharp", "ts_ls", "zls"
             },
             handlers = {
                 function(server_name)
@@ -32,7 +47,7 @@ return {
                 end,
                 ["omnisharp"] = function()
                     local lspconfig = require("lspconfig")
-                    lspconfig.lua_ls.setup {
+                    lspconfig.omnisharp.setup {
                         capabilities = capabilities,
                         cmd = {
                           "omnisharp",
@@ -42,7 +57,7 @@ return {
                           RoslynExtensionsOptions = {
                             enableDecompilationSupport = false,
                             enableImportCompletion = true,
-                            enableAnalyzersSupport = true,
+                            enableAnalyzersSupport = false,
                           }
                         },
                         root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj")
@@ -50,19 +65,20 @@ return {
                 end
             }
         })
-        local lspconfig = require("lspconfig")
-        lspconfig.lua_ls.setup({})
-        lspconfig.ts_ls.setup({})
-        lspconfig.omnisharp.setup {
-            capabilities = capabilities,
-            cmd = {
-                "omnisharp",
-                "--languageserver",
-            },
-            enable_import_completion = true,
-            organize_imports_on_formats = true,
-            enable_roslyn_analyzers = true,
-            root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj"),
-        }
+        local cmp_select = { behavior = cmp.SelectBehavior.Select }
+
+        cmp.setup({
+            mapping = cmp.mapping.preset.insert({
+                ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+                ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+                ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+                ["<C-Space>"] = cmp.mapping.complete(),
+            }),
+            souces = cmp.config.sources({
+                { name = 'nvim_lsp' },
+            }, {
+                { name = 'buffer' },
+            })
+        })
     end
 }
