@@ -7,6 +7,9 @@ return {
     },
     {
         "yazeed1s/oh-lucy.nvim"
-    }
+    },
+    {
+        "bluz71/vim-moonfly-colors", as = "moonfly"
+    },
 }
 
