@@ -7,6 +7,8 @@ return {
                 file_browser = {
                     theme = "ivy",
                     hijack_netrw = true,
+                    depth = 0,
+                    grouped = true,
                 },
                 projects = {},
             },
