@@ -9,7 +9,17 @@ return {
         "yazeed1s/oh-lucy.nvim"
     },
     {
-        "bluz71/vim-moonfly-colors", as = "moonfly"
+        "blazkowolf/gruber-darker.nvim"
+    },
+    {
+        "jacoborus/tender.vim"
+    },
+    {
+        "nyoom-engineering/oxocarbon.nvim"
+    },
+    {
+        "zenbones-theme/zenbones.nvim",
+        dependencies = "rktjmp/lush.nvim"
     },
 }
 
