@@ -42,44 +42,51 @@ return {
                             }
                         }
                     end,
-                    ["omnisharp"] = function()
-                        local lspconfig = require("lspconfig")
-                        lspconfig.omnisharp.setup {
-                            capabilities = capabilities,
-                            cmd = {
-                              "omnisharp",
-                              "--languageserver",
-                            },
-                            settings = {
-                              RoslynExtensionsOptions = {
-                                enableDecompilationSupport = false,
-                                enableImportCompletion = true,
-                                enableAnalyzersSupport = false,
-                              }
-                            },
-                            root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj")
-                        }
-                    end
+--                    ["omnisharp"] = function()
+--                        local lspconfig = require("lspconfig")
+--                        lspconfig.omnisharp.setup {
+--                            capabilities = capabilities,
+--                            cmd = {
+--                              "omnisharp",
+--                              "--languageserver",
+--                            },
+--                            settings = {
+--                              RoslynExtensionsOptions = {
+--                                enableDecompilationSupport = false,
+--                                enableImportCompletion = true,
+--                                enableAnalyzersSupport = false,
+--                              }
+--                            },
+--                            root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj")
+--                        }
+--                    end
                 }
             })
             local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
             cmp.setup({
-                completion = {
-                    autocomplete = false
-                },
                 mapping = cmp.mapping.preset.insert({
                     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
                     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
                     ['<TAB>'] = cmp.mapping.confirm({ select = true }),
                     ['<C-y>'] = cmp.mapping.complete({ reson = cmp.ContextReason.Auto })
-                    
                 }),
                 sources = cmp.config.sources({
                     { name = 'nvim_lsp' },
                 }, {
                     { name = 'buffer' },
                 })
+            })
+
+            vim.diagnostic.config({
+
+                virtual_text = {
+                    severity = vim.diagnostic.severity.ERROR
+                },
+                underline = false,
+                signs = {
+                    severity = vim.diagnostic.severity.ERROR
+                },
             })
         end
     },
